@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx_lb
+    ports:
+      - 80:80
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  api:
+    build:
+      context: .
+      dockerfile: ./.docker/golang/Dockerfile
+    container_name: go-boilerplate-api
+    volumes:
+      - ./api/.:/go/app
+    command: realize start --run
+    ports:
+      - 1323:1323
+  db:
+    build:
+      context: .
+      dockerfile: ./.docker/postgres/Dockerfile
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports: 
+      - 15432:5432
+    links:
+      - api
+volumes:
+  postgresql-data:

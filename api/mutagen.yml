@@ -1,0 +1,9 @@
+sync:
+  development:
+    mode: "one-way-replica"
+    alpha: "."
+    beta: "docker://go-boilerplate-api/go/src/app"
+    ignore:
+      vcs: true
+      paths:
+        - "/main"
